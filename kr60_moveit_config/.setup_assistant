@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: kr60
+    relative_path: urdf/kr60.xacro
+    xacro_args: ""
+  SRDF:
+    relative_path: config/kr60.srdf
+  CONFIG:
+    author_name: kr60
+    author_email: kr60@kr60.com
+    generated_timestamp: 1617032281
