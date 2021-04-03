@@ -3,6 +3,6 @@
     <rosparam file="$(find kr10_gazebo)/config/trajectory_control.yaml" command="load"/>
 
     <node name="kr10_controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-          output="screen" ns="/kr10" args="kr10_joint_controller"/>
+          output="screen" ns="/kr10" args="arm_joint_controller"/>
 
 </launch>

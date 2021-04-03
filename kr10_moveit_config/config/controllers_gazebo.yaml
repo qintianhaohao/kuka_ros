@@ -1,6 +1,6 @@
 controller_manager_ns: controller_manager
 controller_list:
-  - name: kr10/kr10_joint_controller
+  - name: kr10/arm_joint_controller
     action_ns: follow_joint_trajectory
     type: FollowJointTrajectory
     default: true
