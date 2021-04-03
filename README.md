@@ -2,6 +2,7 @@
 moveit config for kuka arm
 
 kr10:
+
 `roslaunch kr10 view.launch`
 
 `roslaunch kr10_moveit_config demo.launch`
