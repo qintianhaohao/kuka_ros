@@ -6,6 +6,6 @@ moveit_setup_assistant_config:
   SRDF:
     relative_path: config/kr10.srdf
   CONFIG:
-    author_name: kuka
-    author_email: kuka@kuka.com
-    generated_timestamp: 1616428457
+    author_name: kr10
+    author_email: kr10@kr10.com
+    generated_timestamp: 1617427328

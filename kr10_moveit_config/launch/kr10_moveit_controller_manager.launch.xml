@@ -12,4 +12,3 @@
   <!-- Gazebo -->
   <rosparam file="$(find kr10_moveit_config)/config/controllers_gazebo.yaml"/>
 </launch>
-

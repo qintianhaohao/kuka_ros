@@ -5,8 +5,8 @@
   <description>
      An automatically generated package with all the configuration and launch files for using the kr10 with the MoveIt! Motion Planning Framework
   </description>
-  <author email="kuka@kuka.com">kuka</author>
-  <maintainer email="kuka@kuka.com">kuka</maintainer>
+  <author email="kr10@kr10.com">kr10</author>
+  <maintainer email="kr10@kr10.com">kr10</maintainer>
 
   <license>BSD</license>
 
