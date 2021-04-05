@@ -71,10 +71,14 @@ class MoveItPickAndPlaceDemo:
 
         # 设置场景物体的名称 
         table_id = 'table'
+        box1_id = 'box1'
+        box2_id = 'box2'
         target_id = 'target'
                 
         # 移除场景中之前运行残留的物体
         scene.remove_world_object(table_id)
+        scene.remove_world_object(box1_id)
+        scene.remove_world_object(box2_id)
         scene.remove_world_object(target_id)
         
         # 移除场景中之前与机器臂绑定的物体
@@ -84,128 +88,145 @@ class MoveItPickAndPlaceDemo:
         # 控制机械臂先回到初始化位置
         arm.set_named_target('home')
         arm.go()
+        
+        # 控制夹爪张开
+        # gripper.set_joint_value_target(GRIPPER_OPEN)
+        gripper.set_named_target('finger_home')
+        gripper.go()
         rospy.sleep(1)
 
-        while not rospy.is_shutdown():
-            # 控制夹爪张开
-            # gripper.set_joint_value_target(GRIPPER_OPEN)
-            gripper.set_named_target('finger_home')
-            gripper.go()
-            rospy.sleep(3)
+        gripper.set_named_target('finger_close')
+        gripper.go()
+        rospy.sleep(1)
 
-            gripper.set_named_target('finger_close')
-            gripper.go()
-            rospy.sleep(3)
-
-        # # 设置桌面的高度
-        # table_ground = 0.1
+        # 设置桌面的高度
+        table_ground = 0.1
         
-        # # 设置table、box1和box2的三维尺寸[长, 宽, 高]
-        # table_size = [1, 2, 0.01]
+        # 设置table、box1和box2的三维尺寸[长, 宽, 高]
+        table_size = [1, 2, 0.01]
+        box1_size = [0.1, 0.05, 0.05]
+        box2_size = [0.05, 0.05, 0.15]
         
-        # # 将三个物体加入场景当中
-        # table_pose = PoseStamped()
-        # table_pose.header.frame_id = REFERENCE_FRAME
-        # table_pose.pose.position.x = 1.5
-        # table_pose.pose.position.y = 0.0
-        # table_pose.pose.position.z = table_ground + table_size[2] / 2.0
-        # table_pose.pose.orientation.w = 1.0
-        # scene.add_box(table_id, table_pose, table_size)
+        # 将三个物体加入场景当中
+        table_pose = PoseStamped()
+        table_pose.header.frame_id = REFERENCE_FRAME
+        table_pose.pose.position.x = 1.5
+        table_pose.pose.position.y = 0.0
+        table_pose.pose.position.z = table_ground + table_size[2] / 2.0
+        table_pose.pose.orientation.w = 1.0
+        scene.add_box(table_id, table_pose, table_size)
         
-        # # 将桌子设置成红色，两个box设置成橙色
-        # self.setColor(table_id, 0.8, 0, 0, 1.0)
+        # box1_pose = PoseStamped()
+        # box1_pose.header.frame_id = REFERENCE_FRAME
+        # box1_pose.pose.position.x = 0.31
+        # box1_pose.pose.position.y = -0.1
+        # box1_pose.pose.position.z = table_ground + table_size[2] + box1_size[2] / 2.0
+        # box1_pose.pose.orientation.w = 1.0   
+        # scene.add_box(box1_id, box1_pose, box1_size)
         
-        # # 设置目标物体的尺寸
-        # target_size = [0.5, 0.05, 0.2]
-        
-        # # 设置目标物体的位置，位于桌面之上两个盒子之间
-        # target_pose = PoseStamped()
-        # target_pose.header.frame_id = REFERENCE_FRAME
-        # target_pose.pose.position.x = 1.5
-        # target_pose.pose.position.y = 0.0
-        # target_pose.pose.position.z = table_ground + table_size[2] + target_size[2] / 2.0
-        # target_pose.pose.orientation.w = 1.0
-        
-        # # 将抓取的目标物体加入场景中
-        # scene.add_box(target_id, target_pose, target_size)
-        
-        # # 将目标物体设置为黄色
-        # self.setColor(target_id, 0.9, 0.9, 0, 1.0)
-        
-        # # 将场景中的颜色设置发布
-        # self.sendColors()
-
-        # # 设置支持的外观
-        # arm.set_support_surface_name(table_id)
-        
-        # # 设置一个place阶段需要放置物体的目标位置
-        # place_pose = PoseStamped()
-        # place_pose.header.frame_id = REFERENCE_FRAME
-        # place_pose.pose.position.x = 1.5
-        # place_pose.pose.position.y = 0.3
-        # place_pose.pose.position.z = table_ground + table_size[2] + target_size[2] / 2.0
-        # place_pose.pose.orientation.w = 1.0
-
-        # # 将目标位置设置为机器人的抓取目标位置
-        # grasp_pose = target_pose
+        # box2_pose = PoseStamped()
+        # box2_pose.header.frame_id = REFERENCE_FRAME
+        # box2_pose.pose.position.x = 0.29
+        # box2_pose.pose.position.y = 0.13
+        # box2_pose.pose.position.z = table_ground + table_size[2] + box2_size[2] / 2.0
+        # box2_pose.pose.orientation.w = 1.0   
+        # scene.add_box(box2_id, box2_pose, box2_size)       
                 
-        # # 生成抓取姿态
-        # grasps = self.make_grasps(grasp_pose, [target_id])
+        # 将桌子设置成红色，两个box设置成橙色
+        self.setColor(table_id, 0.8, 0, 0, 1.0)
+        # self.setColor(box1_id, 0.8, 0.4, 0, 1.0)
+        # self.setColor(box2_id, 0.8, 0.4, 0, 1.0)
+        
+        # 设置目标物体的尺寸
+        target_size = [0.5, 0.05, 0.2]
+        
+        # 设置目标物体的位置，位于桌面之上两个盒子之间
+        target_pose = PoseStamped()
+        target_pose.header.frame_id = REFERENCE_FRAME
+        target_pose.pose.position.x = 1.5
+        target_pose.pose.position.y = 0.0
+        target_pose.pose.position.z = table_ground + table_size[2] + target_size[2] / 2.0
+        target_pose.pose.orientation.w = 1.0
+        
+        # 将抓取的目标物体加入场景中
+        scene.add_box(target_id, target_pose, target_size)
+        
+        # 将目标物体设置为黄色
+        self.setColor(target_id, 0.9, 0.9, 0, 1.0)
+        
+        # 将场景中的颜色设置发布
+        self.sendColors()
 
-        # # 将抓取姿态发布，可以在rviz中显示
-        # for grasp in grasps:
-        #     self.gripper_pose_pub.publish(grasp.grasp_pose)
-        #     rospy.sleep(0.2)
+        # 设置支持的外观
+        arm.set_support_surface_name(table_id)
+        
+        # 设置一个place阶段需要放置物体的目标位置
+        place_pose = PoseStamped()
+        place_pose.header.frame_id = REFERENCE_FRAME
+        place_pose.pose.position.x = 1.5
+        place_pose.pose.position.y = 0.3
+        place_pose.pose.position.z = table_ground + table_size[2] + target_size[2] / 2.0
+        place_pose.pose.orientation.w = 1.0
+
+        # 将目标位置设置为机器人的抓取目标位置
+        grasp_pose = target_pose
+                
+        # 生成抓取姿态
+        grasps = self.make_grasps(grasp_pose, [target_id])
+
+        # 将抓取姿态发布，可以在rviz中显示
+        for grasp in grasps:
+            self.gripper_pose_pub.publish(grasp.grasp_pose)
+            rospy.sleep(0.2)
     
-        # # 追踪抓取成功与否，以及抓取的尝试次数
-        # result = None
-        # n_attempts = 0
+        # 追踪抓取成功与否，以及抓取的尝试次数
+        result = None
+        n_attempts = 0
         
-        # # 重复尝试抓取，直道成功或者超多最大尝试次数
-        # while result != MoveItErrorCodes.SUCCESS and n_attempts < max_pick_attempts:
-        #     n_attempts += 1
-        #     rospy.loginfo("Pick attempt: " +  str(n_attempts))
-        #     result = arm.pick(target_id, grasps)
-        #     rospy.sleep(0.2)
+        # 重复尝试抓取，直道成功或者超多最大尝试次数
+        while result != MoveItErrorCodes.SUCCESS and n_attempts < max_pick_attempts:
+            n_attempts += 1
+            rospy.loginfo("Pick attempt: " +  str(n_attempts))
+            result = arm.pick(target_id, grasps)
+            rospy.sleep(0.2)
         
-        # # 如果pick成功，则进入place阶段 
-        # if result == MoveItErrorCodes.SUCCESS:
-        #     result = None
-        #     n_attempts = 0
+        # 如果pick成功，则进入place阶段 
+        if result == MoveItErrorCodes.SUCCESS:
+            result = None
+            n_attempts = 0
             
-        #     # 生成放置姿态
-        #     places = self.make_places(place_pose)
+            # 生成放置姿态
+            places = self.make_places(place_pose)
             
-        #     # 重复尝试放置，直道成功或者超多最大尝试次数
-        #     while result != MoveItErrorCodes.SUCCESS and n_attempts < max_place_attempts:
-        #         n_attempts += 1
-        #         rospy.loginfo("Place attempt: " +  str(n_attempts))
-        #         for place in places:
-        #             result = arm.place(target_id, place)
-        #             if result == MoveItErrorCodes.SUCCESS:
-        #                 break
-        #         rospy.sleep(0.2)
+            # 重复尝试放置，直道成功或者超多最大尝试次数
+            while result != MoveItErrorCodes.SUCCESS and n_attempts < max_place_attempts:
+                n_attempts += 1
+                rospy.loginfo("Place attempt: " +  str(n_attempts))
+                for place in places:
+                    result = arm.place(target_id, place)
+                    if result == MoveItErrorCodes.SUCCESS:
+                        break
+                rospy.sleep(0.2)
                 
-        #     if result != MoveItErrorCodes.SUCCESS:
-        #         rospy.loginfo("Place operation failed after " + str(n_attempts) + " attempts.")
-        # else:
-        #     rospy.loginfo("Pick operation failed after " + str(n_attempts) + " attempts.")
+            if result != MoveItErrorCodes.SUCCESS:
+                rospy.loginfo("Place operation failed after " + str(n_attempts) + " attempts.")
+        else:
+            rospy.loginfo("Pick operation failed after " + str(n_attempts) + " attempts.")
                 
-        # # 控制机械臂回到初始化位置
-        # arm.set_named_target('home')
-        # arm.go()
+        # 控制机械臂回到初始化位置
+        arm.set_named_target('home')
+        arm.go()
         
-        # # 控制夹爪回到张开的状态
-        # # gripper.set_joint_value_target(GRIPPER_OPEN)
-        # gripper.set_named_target('finger_home')
-        # gripper.go()
-        # rospy.sleep(1)
+        # 控制夹爪回到张开的状态
+        # gripper.set_joint_value_target(GRIPPER_OPEN)
+        gripper.set_named_target('finger_home')
+        gripper.go()
+        rospy.sleep(1)
 
         # 关闭并退出moveit
         moveit_commander.roscpp_shutdown()
         moveit_commander.os._exit(0)
-    
-
+        
     # 创建夹爪的姿态数据JointTrajectory
     def make_gripper_posture(self, joint_positions):
         # 初始化夹爪的关节运动轨迹
