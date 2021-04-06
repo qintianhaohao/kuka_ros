@@ -19,7 +19,7 @@
     <!-- 启动rviz可视化界面 -->
     <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find marm_planning)/config/pick_and_place.rviz" required="true" /> -->
     <!-- Run Rviz and load the default config to see the state of the move_group node -->
-    <include file="$(find kr10_moveit_config)/launch/moveit_rviz.launch">
+    <!-- <include file="$(find kr10_moveit_config)/launch/moveit_rviz.launch">
         <arg name="rviz_config" value="$(find kr10_moveit_config)/launch/moveit.rviz"/>
-    </include>
+    </include> -->
 </launch>

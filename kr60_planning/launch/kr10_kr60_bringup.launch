@@ -1,0 +1,38 @@
+<launch>
+    <!-- 不使用仿真时间 -->
+    <param name="/use_sim_time" value="false" />
+    <arg name="sim" default="true" />
+
+    <!-- kr10 -->
+
+    <group ns = "kr10">
+        <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find kr10)/urdf/kr10.xacro'" />
+        <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" />
+        <include file="$(find kr10_moveit_config)/launch/move_group.launch" />
+        <node name="arbotix" pkg="arbotix_python" type="arbotix_driver" output="screen">
+            <rosparam file="$(find kr10)/config/arm.yaml" command="load" />
+            <param name="sim" value="true"/>
+        </node>
+    </group>
+
+    <!-- kr60 -->
+    <group ns = "kr60">
+        <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find kr60)/urdf/kr60.xacro'" />
+
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+            <rosparam param="source_list">[move_group/fake_controller_joint_states]</rosparam>
+        </node>
+
+        <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" />
+
+        <include file="$(find kr60_moveit_config)/launch/move_group.launch" >
+            <arg name="fake_execution" value="true"/>
+        </include>
+    </group>
+
+    <!-- move_group -->
+
+
+    <!-- 启动rviz可视化界面 -->
+
+</launch>

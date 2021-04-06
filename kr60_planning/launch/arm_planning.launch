@@ -7,24 +7,6 @@
 
     <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find kr60)/urdf/kr60.xacro'" />
 
-    <!-- <node name="arbotix" pkg="arbotix_python" type="arbotix_driver" output="screen">
-        <rosparam file="$(find kr60)/config/arm.yaml" command="load" />
-        <param name="sim" value="true"/>
-    </node>
-
-        <node name="finger_joint_controller" pkg="arbotix_controllers" type="gripper_controller" ns="kr60">
-        <rosparam>
-            model: singlesided
-            invert: false
-            center: 0.0
-            pad_width: 0.04
-            finger_length: 0.10
-            min_opening: -1.0
-            max_opening: 0.2
-            joint: finger_joint1
-        </rosparam>
-    </node> -->
-
   <!-- We do not have a robot connected, so publish fake joint states -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
     <rosparam param="source_list">[move_group/fake_controller_joint_states]</rosparam>
@@ -37,7 +19,7 @@
     </include>
 
     <!-- 启动rviz可视化界面 -->
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find kr60_planning)/config/arm.rviz" required="true" />
+    <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find kr60_planning)/config/arm.rviz" required="true" /> -->
     <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find kr60_planning)/config/pick_and_place.rviz" required="true" /> -->
     <!-- Run Rviz and load the default config to see the state of the move_group node -->
     <!-- <include file="$(find kr60_moveit_config)/launch/moveit_rviz.launch">
