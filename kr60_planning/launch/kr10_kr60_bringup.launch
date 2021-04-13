@@ -17,7 +17,7 @@
         <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
             <param name="tf_prefix" value="kr10" />
         </node>
-        <include file="$(find kr10_moveit_config)/launch/move_group.launch" />
+        <include file="$(find kr60_planning)/launch/kr10_move_group.launch" />
         <node name="arbotix" pkg="arbotix_python" type="arbotix_driver" output="screen">
             <rosparam file="$(find kr10)/config/arm.yaml" command="load" />
             <param name="sim" value="true"/>
@@ -37,7 +37,7 @@
         <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
             <param name="tf_prefix" value="kr60" />
         </node>
-        <include file="$(find kr60_moveit_config)/launch/move_group.launch" >
+        <include file="$(find kr60_planning)/launch/kr60_move_group.launch" >
             <arg name="fake_execution" value="true"/>
         </include>
         <!-- <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf"  args="-urdf -model kr60 -x 5 -y 0 -z 0 -Y 0 -param robot_description" /> -->
@@ -50,6 +50,23 @@
 
 
     <!-- move_group -->
+    <node name="move_group" launch-prefix="" pkg="moveit_ros_move_group" type="move_group" respawn="false" output="screen" args="">
+        <!-- Set the display variable, in case OpenGL code is used internally -->
+        <env name="DISPLAY" value="$(optenv DISPLAY :0)" />
+
+        <param name="allow_trajectory_execution" value="true"/>
+        <param name="max_safe_path_cost" value="1"/>
+        <param name="jiggle_fraction" value="0.05" />
+        <param name="capabilities" value=""/>
+        <param name="disable_capabilities" value=""/>
+
+
+        <!-- Publish the planning scene of the physical robot so that rviz plugin can know actual robot -->
+        <param name="planning_scene_monitor/publish_planning_scene" value="true" />
+        <param name="planning_scene_monitor/publish_geometry_updates" value="true" />
+        <param name="planning_scene_monitor/publish_state_updates" value="true" />
+        <param name="planning_scene_monitor/publish_transforms_updates" value="true" />
+    </node>
 
 
     <!-- 启动rviz可视化界面 -->
