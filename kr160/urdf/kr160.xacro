@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<robot name="kr160" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find kr160)/urdf/kr10.xacro"/>
+  <xacro:include filename="$(find kr160)/urdf/kr60.xacro"/>
+
+    <!-- Defining the colors used in this robot -->
+    <material name="Black">
+        <color rgba="0 0 0 1"/>
+    </material>
+
+    <material name="White">
+        <color rgba="1 1 1 1"/>
+    </material>
+
+    <material name="Blue">
+        <color rgba="0 0 1 1"/>
+    </material>
+
+    <material name="Red">
+        <color rgba="1 0 0 1"/>
+    </material>
+
+    <!-- Inertial matrix -->
+    <xacro:macro name="inertial_matrix" params="mass">
+        <inertial>
+            <mass value="${mass}" />
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="0.5" iyz="0.0" izz="1.0" />
+        </inertial>
+    </xacro:macro>
+
+  <!-- ///////////////////////////////////////   dummy link   ////////////////////////////////////////// -->
+  
+  <link name="dummy">
+      <visual>
+            <origin xyz=" 0 0 -0.02"  rpy="0 0 0"/>
+                <geometry>
+                      <box size="1 1 0.02" />
+                </geometry>
+            <material name="Brown" />
+      </visual>
+      <collision>
+          <origin xyz=" 0 0 -0.02"  rpy="0 0 0"/>
+          <geometry>
+              <box size="1 1 0.02" />
+          </geometry>
+      </collision>
+      <xacro:inertial_matrix mass="500"/>
+  </link>
+
+  <!-- /////////////////////////////////   kr10   ////////////////////////////////////// -->
+  <xacro:kr10 prefix="kr10" base_parent="dummy"/>
+
+  <joint name="dummy_joint_kr10" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="dummy"/>
+    <child link="kr10_base_link"/>
+  </joint>
+
+  <!-- /////////////////////////////////   kr60   ////////////////////////////////////// -->
+  <xacro:kr60 prefix="kr60"/>
+
+  <joint name="dummy_joint_kr60" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="dummy"/>
+    <child link="kr60_base_link"/>
+  </joint>
+
+  <!-- /////////////////////////////////   Gazebo   ////////////////////////////////////// -->
+    <!-- Transmissions for ROS Control -->
+    <xacro:macro name="transmission_block" params="joint_name">
+        <transmission name="tran1">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${joint_name}">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="motor1">
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+    </xacro:macro>
+    
+    <xacro:transmission_block joint_name="joint1"/>
+    <xacro:transmission_block joint_name="joint2"/>
+    <xacro:transmission_block joint_name="joint3"/>
+    <xacro:transmission_block joint_name="joint4"/>
+    <xacro:transmission_block joint_name="joint5"/>
+    <xacro:transmission_block joint_name="joint6"/>
+    <xacro:transmission_block joint_name="finger_joint1"/>
+    <xacro:transmission_block joint_name="finger_joint2"/>
+
+    <!-- ros_control plugin -->
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/kr60</robotNamespace>
+            <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+            <legacyModeNS>true</legacyModeNS>
+        </plugin>
+    </gazebo>
+
+</robot>
