@@ -1,0 +1,28 @@
+controller_list:
+  - name: fake_kr10_controller
+    joints:
+      - kr10_joint1
+      - kr10_joint2
+      - kr10_joint3
+      - kr10_joint4
+      - kr10_joint5
+      - kr10_joint6
+  - name: fake_kr60_controller
+    joints:
+      - kr60_joint1
+      - kr60_joint2
+      - kr60_joint3
+      - kr60_joint4
+      - kr60_joint5
+      - kr60_joint6
+  - name: fake_finger_controller
+    joints:
+      - kr60_finger_joint1
+      - kr60_finger_joint2
+initial:  # Define initial robot poses.
+  - group: kr10
+    pose: kr10_home
+  - group: kr60
+    pose: kr60_home
+  - group: finger
+    pose: finger_home

@@ -35,33 +35,33 @@
       <visual>
             <origin xyz=" 0 0 -0.02"  rpy="0 0 0"/>
                 <geometry>
-                      <box size="1 1 0.02" />
+                      <box size="5 1 0.02" />
                 </geometry>
             <material name="Brown" />
       </visual>
       <collision>
           <origin xyz=" 0 0 -0.02"  rpy="0 0 0"/>
           <geometry>
-              <box size="1 1 0.02" />
+              <box size="5 1 0.02" />
           </geometry>
       </collision>
       <xacro:inertial_matrix mass="500"/>
   </link>
 
   <!-- /////////////////////////////////   kr10   ////////////////////////////////////// -->
-  <xacro:kr10 prefix="kr10" base_parent="dummy"/>
-
+  <xacro:kr10 prefix="kr10"/>
   <joint name="dummy_joint_kr10" type="fixed">
-    <origin xyz="0 0 0" rpy="0 0 0" />
+    <origin xyz="-1.5 0 0" rpy="0 0 0" />
     <parent link="dummy"/>
     <child link="kr10_base_link"/>
   </joint>
 
+
+
   <!-- /////////////////////////////////   kr60   ////////////////////////////////////// -->
   <xacro:kr60 prefix="kr60"/>
-
   <joint name="dummy_joint_kr60" type="fixed">
-    <origin xyz="0 0 0" rpy="0 0 0" />
+    <origin xyz="1.5 0 0" rpy="0 0 3.14" />
     <parent link="dummy"/>
     <child link="kr60_base_link"/>
   </joint>
@@ -81,22 +81,37 @@
         </transmission>
     </xacro:macro>
     
-    <xacro:transmission_block joint_name="joint1"/>
-    <xacro:transmission_block joint_name="joint2"/>
-    <xacro:transmission_block joint_name="joint3"/>
-    <xacro:transmission_block joint_name="joint4"/>
-    <xacro:transmission_block joint_name="joint5"/>
-    <xacro:transmission_block joint_name="joint6"/>
-    <xacro:transmission_block joint_name="finger_joint1"/>
-    <xacro:transmission_block joint_name="finger_joint2"/>
+    <xacro:transmission_block joint_name="kr10_joint1"/>
+    <xacro:transmission_block joint_name="kr10_joint2"/>
+    <xacro:transmission_block joint_name="kr10_joint3"/>
+    <xacro:transmission_block joint_name="kr10_joint4"/>
+    <xacro:transmission_block joint_name="kr10_joint5"/>
+    <xacro:transmission_block joint_name="kr10_joint6"/>
+
+    <xacro:transmission_block joint_name="kr60_joint1"/>
+    <xacro:transmission_block joint_name="kr60_joint2"/>
+    <xacro:transmission_block joint_name="kr60_joint3"/>
+    <xacro:transmission_block joint_name="kr60_joint4"/>
+    <xacro:transmission_block joint_name="kr60_joint5"/>
+    <xacro:transmission_block joint_name="kr60_joint6"/>
+    <xacro:transmission_block joint_name="kr60_finger_joint1"/>
+    <xacro:transmission_block joint_name="kr60_finger_joint2"/>
 
     <!-- ros_control plugin -->
     <gazebo>
         <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-            <robotNamespace>/kr60</robotNamespace>
+            <robotNamespace>/kr160</robotNamespace>
             <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
             <legacyModeNS>true</legacyModeNS>
         </plugin>
     </gazebo>
+
+    <!-- default joint position -->
+    <!-- kr10: -0.17 0.28 -0.55 0.00 -1.35 -0.01 -->
+    <!-- kr60: -0.21 0.38 0.01 0.09 -2.35 0.00 0.00 0.00 -->
+
+    <!-- cylinders -->
+    <!-- cylinder0: 0.1 0.05-->
+    <!-- cylinder1: 0.15 0.3 -->
 
 </robot>

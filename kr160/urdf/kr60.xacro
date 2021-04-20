@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot name="kr60" xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="kr60" param="prefix:=kr60">
+  <xacro:macro name="kr60" params="prefix:=kr60">
 
   <link
     name="${prefix}_base_link">
