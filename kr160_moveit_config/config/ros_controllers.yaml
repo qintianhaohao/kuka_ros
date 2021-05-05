@@ -26,8 +26,138 @@ hardware_interface:
   sim_control_mode: 1  # 0: position, 1: velocity
 # Publish all joint states
 # Creates the /joint_states topic necessary in ROS
-joint_state_controller:
-  type: joint_state_controller/JointStateController
-  publish_rate: 50
+
 controller_list:
-  []
+  - name: kr160/kr_ten_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - kr10_joint1
+      - kr10_joint2
+      - kr10_joint3
+      - kr10_joint4
+      - kr10_joint5
+      - kr10_joint6
+  - name: kr160/kr_sixty_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - kr60_joint1
+      - kr60_joint2
+      - kr60_joint3
+      - kr60_joint4
+      - kr60_joint5
+      - kr60_joint6
+  - name: kr160/finger_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - kr60_finger_joint1
+      - kr60_finger_joint2
+
+
+kr160:
+  kr_ten_controller:
+    type: position_controllers/JointTrajectoryController
+    state_publish_rate:  50 # Defaults to 50
+    action_monitor_rate: 20 # Defaults to 20
+    joints:
+      - kr10_joint1
+      - kr10_joint2
+      - kr10_joint3
+      - kr10_joint4
+      - kr10_joint5
+      - kr10_joint6
+    gains:
+      kr10_joint1:
+        p: 100
+        d: 1
+        i: 1
+        i_clamp: 1
+      kr10_joint2:
+        p: 100
+        d: 1
+        i: 1
+        i_clamp: 1
+      kr10_joint3:
+        p: 100
+        d: 1
+        i: 1
+        i_clamp: 1
+      kr10_joint4:
+        p: 100
+        d: 1
+        i: 1
+        i_clamp: 1
+      kr10_joint5:
+        p: 100
+        d: 1
+        i: 1
+        i_clamp: 1
+      kr10_joint6:
+        p: 100
+        d: 1
+        i: 1
+        i_clamp: 1
+  kr_sixty_controller:
+    type: position_controllers/JointTrajectoryController
+    joints:
+      - kr60_joint1
+      - kr60_joint2
+      - kr60_joint3
+      - kr60_joint4
+      - kr60_joint5
+      - kr60_joint6
+    gains:
+      kr60_joint1:
+        p: 100
+        d: 1
+        i: 1
+        i_clamp: 1
+      kr60_joint2:
+        p: 100
+        d: 1
+        i: 1
+        i_clamp: 1
+      kr60_joint3:
+        p: 100
+        d: 1
+        i: 1
+        i_clamp: 1
+      kr60_joint4:
+        p: 100
+        d: 1
+        i: 1
+        i_clamp: 1
+      kr60_joint5:
+        p: 100
+        d: 1
+        i: 1
+        i_clamp: 1
+      kr60_joint6:
+        p: 100
+        d: 1
+        i: 1
+        i_clamp: 1
+  finger_controller:
+    type: position_controllers/JointTrajectoryController
+    joints:
+      - kr60_finger_joint1
+      - kr60_finger_joint2
+    gains:
+      kr60_finger_joint1:
+        p: 100
+        d: 1
+        i: 1
+        i_clamp: 1
+      kr60_finger_joint2:
+        p: 100
+        d: 1
+        i: 1
+        i_clamp: 1
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
